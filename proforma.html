@@ -105,6 +105,7 @@ function bereken() {
     const korting = get("loonheffingskorting");
 
     const feitelijkLoon = loon * normaleUren;
+    const normaalloon = loon * normaleUren;
     const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
     const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
     const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof) * 0.0833 : 0;
@@ -134,6 +135,7 @@ function bereken() {
     const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
 
     const resultaat = `Feitelijk loon: €${feitelijkLoon.toFixed(2)}
+Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
 Bovenwettelijk verlof: €${bovenwettelijkVerlof.toFixed(2)}
 Vakantiegeld: €${vakantiegeld.toFixed(2)}
