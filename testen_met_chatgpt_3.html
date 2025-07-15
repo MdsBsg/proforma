@@ -56,11 +56,19 @@
             download: true,
             header: true,
             complete: function(results) {
-                loonheffingTabel = results.data.map(row => ({
-                    bruto: parseFloat(row["Brutoloon"]),
-                    zonder: parseFloat(row["zonder loonheffings-korting"]),
-                    met: parseFloat(row["met loonheffings-korting"])
-                })).filter(r => !isNaN(r.bruto));
+                loonheffingTabel = results.data.map(row => {
+                    const keys = Object.keys(row);
+                    const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
+                    const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
+const zonderKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("zonder"));
+
+                    return {
+                        bruto: parseFloat(row[brutoloonKey]),
+                        zonder: parseFloat(row[zonderKey]),
+                        met: parseFloat(row[metKey])
+                    };
+                }).filter(r => !isNaN(r.bruto));
+
                 document.getElementById("resultaat").innerText = "Klaar voor berekening.";
             }
         });
