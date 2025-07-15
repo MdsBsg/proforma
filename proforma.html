@@ -108,7 +108,6 @@ const feitelijkLoon = loon * normaleUren;
 const normaalloon = loon * normaleUren;
 const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
 const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
-const wettelijkVerlof = feitelijkLoon * 0.0874 : 0;
 const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof) * 0.0833 : 0;
 const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
 const adv = feitelijkLoon * advPerc;
