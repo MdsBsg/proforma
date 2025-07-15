@@ -15,34 +15,34 @@
 <body>
     <h1>Proforma Loonberekening</h1>
 
-    <label>Loon (€ per uur): <input type="number" id="loon" value="18"></label>
+    <label>Loon (€ per uur): <input type="number" id="loon" value="19.01"></label>
     <label>Aantal normale uren: <input type="number" id="urenNormaal" value="38"></label>
 
-    <label>Overwerk1 (%): <input type="number" id="overwerk1" value="125"></label>
-    <label>Overwerk1 uren: <input type="number" id="urenOverwerk1" value="4"></label>
+    <label>Overwerk1 (%): <input type="number" id="overwerk1"></label>
+    <label>Overwerk1 uren: <input type="number" id="urenOverwerk1"></label>
 
-    <label>Overwerk2 (%): <input type="number" id="overwerk2" value="150"></label>
-    <label>Overwerk2 uren: <input type="number" id="urenOverwerk2" value="2"></label>
+    <label>Overwerk2 (%): <input type="number" id="overwerk2"></label>
+    <label>Overwerk2 uren: <input type="number" id="urenOverwerk2"></label>
 
-    <label>Kosten huisvesting (€): <input type="number" id="huisvesting" value="185"></label>
+    <label>Kosten huisvesting (€): <input type="number" id="huisvesting" value="151"></label>
 
     <label>Land cola vergoeding:
         <select id="landCola">
-            <option value="7">Bulgarije</option>  
+            <option value="32">Roemenië</option>  
             <option value="10">België</option>
             <option value="8">Hongarije</option>
             <option value="10">Polen</option>
         </select>
     </label>
 
-    <label>Reiskosten ET (€): <input type="number" id="reiskostenET" value="42"></label>
-    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="15"></label>
+    <label>Reiskosten ET (€): <input type="number" id="reiskostenET"></label>
+    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="14,06"></label>
 
     <label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
     <label>ADV percentage (%): <input type="number" id="advPercentage" value="6.75"></label>
 
-    <label>Bovenwettelijk verlof uitkeren? <select id="verlofUitkeren"><option>nee</option><option>ja</option></select></label>
-    <label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>nee</option><option>ja</option></select></label>
+    <label>Bovenwettelijk verlof uitkeren? <select id="verlofUitkeren"><option>ja</option><option>nee</option></select></label>
+    <label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>ja</option><option>nee</option></select></label>
     <label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
 
     <label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
@@ -112,6 +112,8 @@ function bereken() {
     const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
     const adv = feitelijkLoon * advPerc;
 
+    const StippPremie = pensioengevendLoon * -0.04;
+
     const pensioenuren = normaleUren + urenOW1 + urenOW2;
     const ruimteNormaal = (loon - minLoon) * normaleUren;
     const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
@@ -143,6 +145,7 @@ Kort verzuim: €${kortVerzuim.toFixed(2)}
 ADV: €${adv.toFixed(2)}
 
 Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
+Stipp Plus: €${StippPremie.tofixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
 Loonheffing (${korting}): €${loonheffing.toFixed(2)}
 Netto loon: €${nettoLoon.toFixed(2)}
