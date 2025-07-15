@@ -110,6 +110,7 @@ const normaalloon = loon * normaleUren;
 const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
 const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
 const wettelijkverlof = feitelijkLoon * 0.0874;
+const wettelijkverlofuren = wettelijkverlof / loon;
 
 const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof + wettelijkverlof) * 0.0833 : 0;
 const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
@@ -143,9 +144,9 @@ Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
 Bovenwettelijk verlof: €${bovenwettelijkVerlof.toFixed(2)}
 Wettelijkverlof: €${wettelijkverlof.toFixed(2)}
-Vakantiegeld: €${vakantiegeld.toFixed(2)}
+Wettelijkverlof (uren)${wettelijkverlofuren.toFixed(2)}
 
-wettelijkverlof
+Vakantiegeld: €${vakantiegeld.toFixed(2)}
 Kort verzuim: €${kortVerzuim.toFixed(2)}
 ADV: €${adv.toFixed(2)}
 
