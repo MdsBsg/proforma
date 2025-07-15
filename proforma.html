@@ -1,142 +1,140 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Proforma Loonberekening</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <style>
-        body { font-family: Arial; margin: 20px; max-width: 900px; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select { width: 100%; padding: 6px; margin-top: 4px; }
-        button { margin-top: 20px; padding: 10px 20px; }
-        .resultaat { margin-top: 30px; padding: 10px; background: #f4f4f4; border: 1px solid #ccc; white-space: pre-wrap; }
-    </style>
+<meta charset="UTF-8">
+<title>Proforma Loonberekening</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+body { font-family: Arial; margin: 20px; max-width: 900px; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { width: 100%; padding: 6px; margin-top: 4px; }
+button { margin-top: 20px; padding: 10px 20px; }
+.resultaat { margin-top: 30px; padding: 10px; background: #f4f4f4; border: 1px solid #ccc; white-space: pre-wrap; }
+</style>
 </head>
 <body>
-    <h1>Proforma Loonberekening</h1>
+<h1>Proforma Loonberekening</h1>
 
-    <label>Loon (€ per uur): <input type="number" id="loon" value="19.01"></label>
-    <label>Aantal normale uren: <input type="number" id="urenNormaal" value="38"></label>
+<label>Loon (€ per uur): <input type="number" id="loon" value="18"></label>
+<label>Aantal normale uren: <input type="number" id="urenNormaal" value="38"></label>
 
-    <label>Overwerk1 (%): <input type="number" id="overwerk1"></label>
-    <label>Overwerk1 uren: <input type="number" id="urenOverwerk1"></label>
+<label>Overwerk1 (%): <input type="number" id="overwerk1" value="125"></label>
+<label>Overwerk1 uren: <input type="number" id="urenOverwerk1" value="4"></label>
 
-    <label>Overwerk2 (%): <input type="number" id="overwerk2"></label>
-    <label>Overwerk2 uren: <input type="number" id="urenOverwerk2"></label>
+<label>Overwerk2 (%): <input type="number" id="overwerk2" value="150"></label>
+<label>Overwerk2 uren: <input type="number" id="urenOverwerk2" value="2"></label>
 
-    <label>Kosten huisvesting (€): <input type="number" id="huisvesting" value="151"></label>
+<label>Kosten huisvesting (€): <input type="number" id="huisvesting" value="185"></label>
 
-    <label>Land cola vergoeding:
-        <select id="landCola">
-            <option value="32">Roemenië</option>  
-            <option value="10">België</option>
-            <option value="8">Hongarije</option>
-            <option value="10">Polen</option>
-        </select>
-    </label>
+<label>Land cola vergoeding:
+<select id="landCola">
+<option value="7">Bulgarije</option>  
+<option value="10">België</option>
+<option value="8">Hongarije</option>
+<option value="10">Polen</option>
+</select>
+</label>
 
-    <label>Reiskosten ET (€): <input type="number" id="reiskostenET"></label>
-    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="14,06"></label>
+<label>Reiskosten ET (€): <input type="number" id="reiskostenET" value="42"></label>
+<label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="15"></label>
 
-    <label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
-    <label>ADV percentage (%): <input type="number" id="advPercentage" value="6.75"></label>
+<label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
+<label>ADV percentage (%): <input type="number" id="advPercentage" value="6.75"></label>
 
-    <label>Bovenwettelijk verlof uitkeren? <select id="verlofUitkeren"><option>ja</option><option>nee</option></select></label>
-    <label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>ja</option><option>nee</option></select></label>
-    <label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
+<label>Bovenwettelijk verlof uitkeren? <select id="verlofUitkeren"><option>nee</option><option>ja</option></select></label>
+<label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>nee</option><option>ja</option></select></label>
+<label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
 
-    <label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
+<label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
 
-    <button onclick="bereken()">Bereken</button>
-    <div class="resultaat" id="resultaat">Bezig met laden van loonheffingstabel...</div>
+<button onclick="bereken()">Bereken</button>
+<div class="resultaat" id="resultaat">Bezig met laden van loonheffingstabel...</div>
 
-    <script>
-        let loonheffingTabel = [];
-        Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6XrFlFD7qt0ZWCA1tG3Ogiq070YH1DxksJ0iGaRP82trSX-z3BTYp4uWFAnSX-wcITblotnaa54wc/pub?output=csv", {
-            download: true,
-            header: true,
-            complete: function(results) {
-                loonheffingTabel = results.data.map(row => {
-                    const keys = Object.keys(row);
-                    const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
-                    const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
+<script>
+let loonheffingTabel = [];
+Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6XrFlFD7qt0ZWCA1tG3Ogiq070YH1DxksJ0iGaRP82trSX-z3BTYp4uWFAnSX-wcITblotnaa54wc/pub?output=csv", {
+download: true,
+header: true,
+complete: function(results) {
+loonheffingTabel = results.data.map(row => {
+const keys = Object.keys(row);
+const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
+const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
 const zonderKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("zonder"));
 
-                    return {
-                        bruto: parseFloat(row[brutoloonKey]),
-                        zonder: parseFloat(row[zonderKey]),
-                        met: parseFloat(row[metKey])
-                    };
-                }).filter(r => !isNaN(r.bruto));
+return {
+bruto: parseFloat(row[brutoloonKey]),
+zonder: parseFloat(row[zonderKey]),
+met: parseFloat(row[metKey])
+};
+}).filter(r => !isNaN(r.bruto));
 
-                document.getElementById("resultaat").innerText = "Klaar voor berekening.";
-            }
-        });
+document.getElementById("resultaat").innerText = "Klaar voor berekening.";
+}
+});
 
-        function dichtstbijzijndeLoonheffing(grondslag, korting) {
-    let kolom = korting === 'ja' ? 'met' : 'zonder';
-    let dichtsbij = loonheffingTabel.reduce((prev, curr) => {
-        return Math.abs(curr.bruto - grondslag) < Math.abs(prev.bruto - grondslag) ? curr : prev;
-    });
-    return dichtsbij[kolom] || 0;
+function dichtstbijzijndeLoonheffing(grondslag, korting) {
+let kolom = korting === 'ja' ? 'met' : 'zonder';
+let dichtsbij = loonheffingTabel.reduce((prev, curr) => {
+return Math.abs(curr.bruto - grondslag) < Math.abs(prev.bruto - grondslag) ? curr : prev;
+});
+return dichtsbij[kolom] || 0;
 }
 
 function bereken() {
-    const get = id => document.getElementById(id).value;
-    const num = id => parseFloat(get(id)) || 0;
+const get = id => document.getElementById(id).value;
+const num = id => parseFloat(get(id)) || 0;
 
-    const loon = num("loon");
-    const minLoon = num("minimumLoon");
-    const normaleUren = num("urenNormaal");
-    const ow1 = num("overwerk1");
-    const ow2 = num("overwerk2");
-    const urenOW1 = num("urenOverwerk1");
-    const urenOW2 = num("urenOverwerk2");
-    const huisvesting = num("huisvesting");
-    const cola = num("landCola");
-    const reiskosten = num("reiskostenET");
+const loon = num("loon");
+const minLoon = num("minimumLoon");
+const normaleUren = num("urenNormaal");
+const ow1 = num("overwerk1");
+const ow2 = num("overwerk2");
+const urenOW1 = num("urenOverwerk1");
+const urenOW2 = num("urenOverwerk2");
+const huisvesting = num("huisvesting");
+const cola = num("landCola");
+const reiskosten = num("reiskostenET");
 
-    const advAan = get("advUitkeren") === "ja";
-    const advPerc = advAan ? num("advPercentage") / 100 : 0;
+const advAan = get("advUitkeren") === "ja";
+const advPerc = advAan ? num("advPercentage") / 100 : 0;
 
-    const verlofAan = get("verlofUitkeren") === "ja";
-    const vakantiegeldAan = get("vakantiegeldUitkeren") === "ja";
-    const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
-    const korting = get("loonheffingskorting");
+const verlofAan = get("verlofUitkeren") === "ja";
+const vakantiegeldAan = get("vakantiegeldUitkeren") === "ja";
+const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
+const korting = get("loonheffingskorting");
 
-    const feitelijkLoon = loon * normaleUren;
+const feitelijkLoon = loon * normaleUren;
     const normaalloon = loon * normaleUren;
-    const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
-    const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
-    const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof) * 0.0833 : 0;
-    const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
-    const adv = feitelijkLoon * advPerc;
+const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
+const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
+const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof) * 0.0833 : 0;
+const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
+const adv = feitelijkLoon * advPerc;
 
-    const StippPremie = pensioengevendLoon * -0.04;
+const pensioenuren = normaleUren + urenOW1 + urenOW2;
+const ruimteNormaal = (loon - minLoon) * normaleUren;
+const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
+const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) * loon * urenOW2;
+const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
+const alleUitruil = huisvesting + cola + reiskosten;
+const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
 
-    const pensioenuren = normaleUren + urenOW1 + urenOW2;
-    const ruimteNormaal = (loon - minLoon) * normaleUren;
-    const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
-    const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) * loon * urenOW2;
-    const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
-    const alleUitruil = huisvesting + cola + reiskosten;
-    const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
+const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
+const premieAZW = feitelijkLoon * -0.007;
+const premieWWWGA = brutoVoorSpaww * -0.001;
+const premieWHK = brutoVoorSpaww * -0.0068;
+const spaww = brutoVoorSpaww * 0.001;
 
-    const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
-    const premieAZW = feitelijkLoon * -0.007;
-    const premieWWWGA = brutoVoorSpaww * -0.001;
-    const premieWHK = brutoVoorSpaww * -0.0068;
-    const spaww = brutoVoorSpaww * 0.001;
+const subtotaalBruto = brutoVoorSpaww + premieAZW - uitTeRuilen;
+const grondslagPensioen = brutoVoorSpaww;
+const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
+const loonVoorLH = subtotaalBruto;
+const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
+const subtotaalNetto = loonVoorLH - loonheffing;
+const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
 
-    const subtotaalBruto = brutoVoorSpaww + premieAZW - uitTeRuilen;
-    const grondslagPensioen = brutoVoorSpaww;
-    const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
-    const loonVoorLH = subtotaalBruto;
-    const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
-    const subtotaalNetto = loonVoorLH - loonheffing;
-    const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
-
-    const resultaat = `Feitelijk loon: €${feitelijkLoon.toFixed(2)}
+const resultaat = `Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
 Bovenwettelijk verlof: €${bovenwettelijkVerlof.toFixed(2)}
@@ -145,7 +143,6 @@ Kort verzuim: €${kortVerzuim.toFixed(2)}
 ADV: €${adv.toFixed(2)}
 
 Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
-Stipp Plus: €${StippPremie.tofixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
 Loonheffing (${korting}): €${loonheffing.toFixed(2)}
 Netto loon: €${nettoLoon.toFixed(2)}
@@ -156,8 +153,8 @@ AZW: €${premieAZW.toFixed(2)}
 WW/WGA: €${premieWWWGA.toFixed(2)}
 SPAWW compensatie: €${spaww.toFixed(2)}`;
 
-    document.getElementById("resultaat").textContent = resultaat;
+document.getElementById("resultaat").textContent = resultaat;
 }
-    </script>
+</script>
 </body>
 </html>
