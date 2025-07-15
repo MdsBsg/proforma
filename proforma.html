@@ -129,6 +129,7 @@ const spaww = brutoVoorSpaww * 0.001;
 const subtotaalBruto = brutoVoorSpaww + premieAZW - uitTeRuilen;
 const grondslagPensioen = brutoVoorSpaww;
 const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
+const StippPremie = pensioengevendLoon * 0.04 * -1;
 const loonVoorLH = subtotaalBruto;
 const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
 const subtotaalNetto = loonVoorLH - loonheffing;
@@ -151,6 +152,7 @@ Totale uitruil: €${uitTeRuilen.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
 AZW: €${premieAZW.toFixed(2)}
 WW/WGA: €${premieWWWGA.toFixed(2)}
+Stipp Plus: ${StippPremie.toFixed(2)}
 SPAWW compensatie: €${spaww.toFixed(2)}`;
 
 document.getElementById("resultaat").textContent = resultaat;
