@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Proforma Loonberekening</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        body { font-family: Arial; margin: 20px; max-width: 900px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, select { width: 100%; padding: 6px; margin-top: 4px; }
+        button { margin-top: 20px; padding: 10px 20px; }
+        .resultaat { margin-top: 30px; padding: 10px; background: #f4f4f4; border: 1px solid #ccc; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Proforma Loonberekening</h1>
+
+    <label>Loon (€ per uur): <input type="number" id="loon" value="18"></label>
+    <label>Aantal normale uren: <input type="number" id="urenNormaal" value="38"></label>
+
+    <label>Overwerk1 (%): <input type="number" id="overwerk1" value="125"></label>
+    <label>Overwerk1 uren: <input type="number" id="urenOverwerk1" value="4"></label>
+
+    <label>Overwerk2 (%): <input type="number" id="overwerk2" value="150"></label>
+    <label>Overwerk2 uren: <input type="number" id="urenOverwerk2" value="2"></label>
+
+    <label>Kosten huisvesting (€): <input type="number" id="huisvesting" value="185"></label>
+
+    <label>Land cola vergoeding:
+        <select id="landCola">
+            <option value="10">België</option>
+            <option value="8">Hongarije</option>
+            <option value="7">Bulgarije</option>
+            <option value="10">Polen</option>
+        </select>
+    </label>
+
+    <label>Reiskosten ET (€): <input type="number" id="reiskostenET" value="42"></label>
+    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="15"></label>
+
+    <label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
+    <label>ADV percentage (%): <input type="number" id="advPercentage" value="6.75"></label>
+
+    <label>Bovenwettelijk verlof uitkeren? <select id="verlofUitkeren"><option>nee</option><option>ja</option></select></label>
+    <label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>nee</option><option>ja</option></select></label>
+    <label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
+
+    <label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
+
+    <button onclick="bereken()">Bereken</button>
+    <div class="resultaat" id="resultaat">Bezig met laden van loonheffingstabel...</div>
+
+    <script>
+        let loonheffingTabel = [];
+        Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6XrFlFD7qt0ZWCA1tG3Ogiq070YH1DxksJ0iGaRP82trSX-z3BTYp4uWFAnSX-wcITblotnaa54wc/pub?output=csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                loonheffingTabel = results.data.map(row => ({
+                    bruto: parseFloat(row["Brutoloon"]),
+                    zonder: parseFloat(row["zonder loonheffings-korting"]),
+                    met: parseFloat(row["met loonheffings-korting"])
+                })).filter(r => !isNaN(r.bruto));
+                document.getElementById("resultaat").innerText = "Klaar voor berekening.";
+            }
+        });
+
+        // rest van script blijft ongewijzigd
+    </script>
+</body>
+</html>
