@@ -104,8 +104,8 @@ function bereken() {
     const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
     const korting = get("loonheffingskorting");
 
-    const feitelijkLoon = (loon - minLoon) * normaleUren;
-    const overwerkLoon = (ow1 / 100) * loon * urenOW1 + (ow2 / 100) * loon * urenOW2;
+    const feitelijkLoon = loon * normaleUren;
+    const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
     const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
     const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof) * 0.0833 : 0;
     const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
@@ -113,8 +113,8 @@ function bereken() {
 
     const pensioenuren = normaleUren + urenOW1 + urenOW2;
     const ruimteNormaal = (loon - minLoon) * normaleUren;
-    const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * loon * urenOW1;
-    const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * loon * urenOW2;
+    const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
+    const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) * loon * urenOW2;
     const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
     const alleUitruil = huisvesting + cola + reiskosten;
     const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
