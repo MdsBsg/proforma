@@ -36,6 +36,9 @@ button { margin-top: 20px; padding: 10px 20px; }
 </label>
 
 <label>Reiskosten ET (€): <input type="number" id="reiskostenET" value=""></label>
+<label>Inhouden huur? <select id="invoerhuur"><option>ja</option><option>nee</option></select></label>
+<label>Inhouden zorgpremie? <select id="invoerzorg"><option>ja</option><option>nee</option></select></label>
+
 <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="14.06"></label>
 
 <label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
@@ -104,6 +107,8 @@ const verlofAan = get("verlofUitkeren") === "ja";
 const vakantiegeldAan = get("vakantiegeldUitkeren") === "ja";
 const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
 const korting = get("loonheffingskorting");
+const huuraan = get("invoerhuur") === "ja";
+const zorgaan = get("invoerzorg") === "ja";
 
 const feitelijkLoon = loon * normaleUren;
 const normaalloon = loon * normaleUren;
@@ -129,8 +134,11 @@ const brutoVoorSpaww = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakan
 const brutoVoorSpaww2 = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
 const premieAZW = feitelijkLoon * -0.007;
 const premieWWWGA = brutoVoorSpaww2 * -0.001;
-const premieWHK = brutoVoorSpaww2 * -0.0068;
+const premieWHK = loonVoorLH * -0.0068;
 const spaww = brutoVoorSpaww2 * 0.001;
+
+const zorgpremieinhouden = zorgaan ? -1 * 38.02 : 0;
+const huurinhouden = huuraan ? -1 * huisvesting : 0;
 
 const subtotaalBruto = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
 const grondslagPensioen = brutoVoorSpaww + premieAZW;
@@ -140,7 +148,7 @@ const loonVoorLH = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantieg
 const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
 const loonheffingNegatief = -1 * loonheffing;
 const subtotaalNetto = loonVoorLH - loonheffing;
-const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
+const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgaan + premieWHK;
 
 const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
@@ -158,7 +166,10 @@ Stipp Plus: ${StippPremie.toFixed(2)}
 Loonheffing (${korting}): €${loonheffingNegatief.toFixed(2)}
 Subtotaal nettoloon: €${subtotaalNetto.toFixed(2)}
 
+Inhouding huur: €${huurinhouden.toFixed(2)}
+Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
+Vergoeding ET: €${uitTeRuilen.toFixed(2)}
 Uit te betalen loon: €${nettoLoon.toFixed(2)}
 
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
