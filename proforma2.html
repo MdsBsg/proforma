@@ -123,6 +123,7 @@ const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) 
 const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
 const alleUitruil = huisvesting + cola + reiskosten;
 const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
+const uitTeRuilen2 = ; uitTeRuilen * -1
 
 const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
 const brutoVoorSpaww2 = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
@@ -147,7 +148,7 @@ Vakantiegeld: €${vakantiegeld.toFixed(2)}
 Kort verzuim: €${kortVerzuim.toFixed(2)}
 ADV: €${adv.toFixed(2)}
 SPAWW compensatie: €${spaww.toFixed(2)}
-Totale uitruil: €${uitTeRuilen.toFixed(2)}
+Totale uitruil: €${uitTeRuilen2.toFixed(2)}
 Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
 
 Premie aanvulling ww: €${premieWWWGA.toFixed(2)}
