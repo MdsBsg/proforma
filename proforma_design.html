@@ -188,7 +188,7 @@ function bereken() {
   const adv = feitelijkLoon * advPerc;
 
   const pensioenuren = normaleUren + urenOW1 + urenOW2;
-  const ruimteNormaal = (loon - minLoon) * normaleUren;
+  const ruimteNormaal = ((loon - minLoon) * normaleUren) + bovenwettelijkVerlof;
   const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
   const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) * loon * urenOW2;
   const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
