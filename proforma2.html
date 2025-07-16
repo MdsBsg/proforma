@@ -75,11 +75,11 @@ document.getElementById("resultaat").innerText = "Klaar voor berekening.";
 });
 
 function dichtstbijzijndeLoonheffing(grondslag, korting) {
-let kolom = korting === 'ja' ? 'met' : 'zonder';
-let dichtsbij = loonheffingTabel.reduce((prev, curr) => {
-return Math.abs(curr.bruto - grondslag) < Math.abs(prev.bruto - grondslag) ? curr : prev;
-});
-return dichtsbij[kolom] || 0;
+  let kolom = korting === 'ja' ? 'met' : 'zonder';
+  let dichtsbij = loonheffingTabel.reduce((prev, curr) => {
+    return Math.abs(curr.bruto - grondslag) < Math.abs(prev.bruto - grondslag) ? curr : prev;
+  });
+  return dichtsbij[kolom] || 0;
 }
 
 function bereken() {
