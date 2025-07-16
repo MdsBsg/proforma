@@ -138,6 +138,7 @@ const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
 const StippPremie = pensioengevendLoon * 0.04 * -1;
 const loonVoorLH = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + StippPremie + premieAZW + spaww + premieWWWGA;
 const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
+const loonheffingNegatief = -1 * loonheffing;
 const subtotaalNetto = loonVoorLH - loonheffing;
 const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
 
@@ -154,7 +155,7 @@ Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
 Premie aanvulling ww: €${premieWWWGA.toFixed(2)}
 Premie AZW: €${premieAZW.toFixed(2)}
 Stipp Plus: ${StippPremie.toFixed(2)}
-Loonheffing (${korting}): €${loonheffing.toFixed(2)}
+Loonheffing (${korting}): €${loonheffingNegatief.toFixed(2)}
 Netto loon: €${nettoLoon.toFixed(2)}
 
 WHK: €${premieWHK.toFixed(2)}
@@ -176,7 +177,9 @@ ruimteOW1 ${ruimteOW1.toFixed(2)}
 ruimteOW2 ${ruimteOW2.toFixed(2)}
 Berekende ruimte (norm+ow1+ow2) :${totaalRuimte.toFixed(2)}
 Uit te ruilen :${uitTeRuilen.toFixed(2)}
-                 
+
+
+Wettelijkverlof2 (uren ${wettelijkverlofuren}): €${wettelijkverlof.toFixed(2)}                 
 Wettelijkverlof: €${wettelijkverlof.toFixed(2)}
 Wettelijkverlof (uren): ${wettelijkverlofuren.toFixed(2)}`;
 
