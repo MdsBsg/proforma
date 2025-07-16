@@ -135,7 +135,7 @@ const brutoVoorSpaww = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakan
 const brutoVoorSpaww2 = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
 const premieAZW = feitelijkLoon * -0.007;
 const premieWWWGA = brutoVoorSpaww2 * -0.001;
-const premieWHK = loonVoorLH * -0.0068;
+
 const spaww = brutoVoorSpaww2 * 0.001;
 
 const zorgpremieinhouden = zorgaan ? -38.02 : 0;
@@ -149,6 +149,7 @@ const loonVoorLH = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantieg
 const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
 const loonheffingNegatief = -1 * loonheffing;
 const subtotaalNetto = loonVoorLH - loonheffing;
+const premieWHK = loonVoorLH * -0.0068;
 const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgaan + premieWHK;
 
 const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
