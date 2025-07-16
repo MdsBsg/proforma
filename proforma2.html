@@ -107,6 +107,7 @@ const verlofAan = get("verlofUitkeren") === "ja";
 const vakantiegeldAan = get("vakantiegeldUitkeren") === "ja";
 const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
 const korting = get("loonheffingskorting");
+    
 const huuraan = get("invoerhuur") === "ja";
 const zorgaan = get("invoerzorg") === "ja";
 
@@ -137,8 +138,8 @@ const premieWWWGA = brutoVoorSpaww2 * -0.001;
 const premieWHK = loonVoorLH * -0.0068;
 const spaww = brutoVoorSpaww2 * 0.001;
 
-const zorgpremieinhouden = zorgaan ? -1 * 38.02 : 0;
-const huurinhouden = huuraan ? -1 * huisvesting : 0;
+const zorgpremieinhouden = zorgaan ? -38.02 : 0;
+const huurinhouden = huuraan ? -huisvesting : 0;
 
 const subtotaalBruto = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
 const grondslagPensioen = brutoVoorSpaww + premieAZW;
@@ -171,6 +172,7 @@ Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
 Vergoeding ET: €${uitTeRuilen.toFixed(2)}
 Uit te betalen loon: €${nettoLoon.toFixed(2)}
+
 
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
