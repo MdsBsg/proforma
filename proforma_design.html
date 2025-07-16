@@ -224,19 +224,19 @@ Kort verzuim: €${kortVerzuim.toFixed(2)}
 ADV: €${adv.toFixed(2)}
 SPAWW compensatie: €${spaww.toFixed(2)}
 Totale uitruil: €${uitTeRuilenNegatief.toFixed(2)}
-Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
+<strong>Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}</strong>
 
 Premie aanvulling ww: €${premieWWWGA.toFixed(2)}
 Premie AZW: €${premieAZW.toFixed(2)}
 Stipp Plus: €${StippPremie.toFixed(2)}
 Loonheffing (${korting}): €${loonheffingNegatief.toFixed(2)}
-Subtotaal nettoloon: €${subtotaalNetto.toFixed(2)}
+<strong>Subtotaal nettoloon: €${subtotaalNetto.toFixed(2)}</strong>
 
 Inhouding huur: €${huurinhouden.toFixed(2)}
 Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
 Vergoeding ET: €${uitTeRuilen.toFixed(2)}
-Uit te betalen loon: €${nettoLoon.toFixed(2)}
+<strong>Uit te betalen loon: €${nettoLoon.toFixed(2)}</strong>
 
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
@@ -257,7 +257,7 @@ Uit te ruilen: €${uitTeRuilen.toFixed(2)}
 
 Wettelijk verlof (uren: ${wettelijkverlofuren.toFixed(2)}): €${wettelijkverlof.toFixed(2)}`;
 
-  document.getElementById("resultaat").textContent = resultaat;
+  document.getElementById("resultaat").innerHTML = resultaat;
 }
 </script>
 
