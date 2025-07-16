@@ -150,7 +150,7 @@ const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
 const loonheffingNegatief = -1 * loonheffing;
 const subtotaalNetto = loonVoorLH - loonheffing;
 const premieWHK = loonVoorLH * -0.0068;
-const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgaan + premieWHK;
+const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgpremieinhouden + premieWHK;
 
 const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
