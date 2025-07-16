@@ -133,7 +133,7 @@ const premieWHK = brutoVoorSpaww2 * -0.0068;
 const spaww = brutoVoorSpaww2 * 0.001;
 
 const subtotaalBruto = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
-const grondslagPensioen = brutoVoorSpaww;
+const grondslagPensioen = brutoVoorSpaww - premieAZW;
 const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
 const StippPremie = pensioengevendLoon * 0.04 * -1;
 const loonVoorLH = subtotaalBruto;
