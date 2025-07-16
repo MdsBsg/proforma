@@ -133,7 +133,7 @@ const premieWHK = brutoVoorSpaww2 * -0.0068;
 const spaww = brutoVoorSpaww2 * 0.001;
 
 const subtotaalBruto = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
-const grondslagPensioen = brutoVoorSpaww - premieAZW;
+const grondslagPensioen = brutoVoorSpaww + premieAZW;
 const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
 const StippPremie = pensioengevendLoon * 0.04 * -1;
 const loonVoorLH = subtotaalBruto;
@@ -162,7 +162,7 @@ Uit te betalen loon: €${premieWHK.toFixed(2)}
 
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
-grondslagPensioenL ${grondslagPensioen.toFixed(2)}
+grondslagPensioen ${grondslagPensioen.toFixed(2)}
 pensioengevendLoon ${pensioengevendLoon.toFixed(2)}
 pensioenuren ${pensioenuren.toFixed(2)}
 
