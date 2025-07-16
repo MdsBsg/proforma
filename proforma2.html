@@ -125,18 +125,18 @@ const alleUitruil = huisvesting + cola + reiskosten;
 const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
 const uitTeRuilenNegatief = -1 * uitTeRuilen;
 
-const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
-const brutoVoorSpaww2 = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
+const brutoVoorSpaww = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
+const brutoVoorSpaww2 = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
 const premieAZW = feitelijkLoon * -0.007;
 const premieWWWGA = brutoVoorSpaww * -0.001;
 const premieWHK = brutoVoorSpaww2 * -0.0068;
 const spaww = brutoVoorSpaww2 * 0.001;
 
-const subtotaalBruto = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
+const subtotaalBruto = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
 const grondslagPensioen = brutoVoorSpaww + premieAZW;
 const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
 const StippPremie = pensioengevendLoon * 0.04 * -1;
-const loonVoorLH = subtotaalBruto;
+const loonVoorLH = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + StippPremie + premieAZW + spaww + premieWWWGA;
 const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
 const subtotaalNetto = loonVoorLH - loonheffing;
 const nettoLoon = subtotaalNetto + uitTeRuilen - huisvesting;
