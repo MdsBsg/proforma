@@ -45,7 +45,7 @@ button { margin-top: 20px; padding: 10px 20px; }
 <label>Vakantiegeld uitkeren? <select id="vakantiegeldUitkeren"><option>ja</option><option>nee</option></select></label>
 <label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
 
-    
+
 <label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
 
 <button onclick="bereken()">Bereken</button>
@@ -124,14 +124,13 @@ const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
 const alleUitruil = huisvesting + cola + reiskosten;
 const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
 
-const brutoVoorSpaww = normaalloon  + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
-const subtotaalBruto = normaalloon  + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv + spaww - uitTeRuilen;
+const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
 const premieAZW = feitelijkLoon * -0.007;
 const premieWWWGA = brutoVoorSpaww * -0.001;
 const premieWHK = brutoVoorSpaww * -0.0068;
 const spaww = brutoVoorSpaww * 0.001;
 
-
+const subtotaalBruto = brutoVoorSpaww + premieAZW - uitTeRuilen;
 const grondslagPensioen = brutoVoorSpaww;
 const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
 const StippPremie = pensioengevendLoon * 0.04 * -1;
@@ -168,6 +167,7 @@ ruimteNormaal ${ruimteNormaal.toFixed(2)}
 ruimteOW1 ${ruimteOW1.toFixed(2)}
 ruimteOW2${ruimteOW2.toFixed(2)}
 Wettelijkverlof: €${wettelijkverlof.toFixed(2)}
+Wettelijkverlof (uren)${wettelijkverlofuren.toFixed(2)`;
 Wettelijkverlof (uren): ${wettelijkverlofuren.toFixed(2)}`;
 
 document.getElementById("resultaat").textContent = resultaat;
