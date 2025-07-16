@@ -119,28 +119,148 @@
 
   <div class="resultaat" id="resultaat">Bezig met laden van loonheffingstabel...</div>
 
-  <script>
+<script>
 let loonheffingTabel = [];
 Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6XrFlFD7qt0ZWCA1tG3Ogiq070YH1DxksJ0iGaRP82trSX-z3BTYp4uWFAnSX-wcITblotnaa54wc/pub?output=csv", {
-  download: true,
-  header: true,
-  complete: function(results) {
-    loonheffingTabel = results.data.map(row => {
-      const keys = Object.keys(row);
-      const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
-      const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
-      const zonderKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("zonder"));
-      
-      return {
-        bruto: parseFloat(row[brutoloonKey].replace(',', '.')),
-        zonder: parseFloat(row[zonderKey].replace(',', '.')),
-        met: parseFloat(row[metKey].replace(',', '.'))     
-      };
-    }).filter(r => !isNaN(r.bruto));
+download: true,
+header: true,
+complete: function(results) {
+loonheffingTabel = results.data.map(row => {
+const keys = Object.keys(row);
+const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
+const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
+const zonderKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("zonder"));
 
-    document.getElementById("resultaat").innerText = "Klaar voor berekening.";
-  }
+return {
+bruto: parseFloat(row[brutoloonKey].replace(',', '.')),
+zonder: parseFloat(row[zonderKey].replace(',', '.')),
+met: parseFloat(row[metKey].replace(',', '.'))     
+};
+}).filter(r => !isNaN(r.bruto));
+
+document.getElementById("resultaat").innerText = "Klaar voor berekening.";
+}
 });
+
+function dichtstbijzijndeLoonheffing(grondslag, korting) {
+  let kolom = korting === 'ja' ? 'met' : 'zonder';
+  let dichtsbij = loonheffingTabel.reduce((prev, curr) => {
+    return Math.abs(curr.bruto - grondslag) < Math.abs(prev.bruto - grondslag) ? curr : prev;
+  });
+  return dichtsbij[kolom] || 0;
+}
+
+function bereken() {
+const get = id => document.getElementById(id).value;
+const num = id => parseFloat(get(id)) || 0;
+
+const loon = num("loon");
+const minLoon = num("minimumLoon");
+const normaleUren = num("urenNormaal");
+const ow1 = num("overwerk1");
+const ow2 = num("overwerk2");
+const urenOW1 = num("urenOverwerk1");
+const urenOW2 = num("urenOverwerk2");
+const huisvesting = num("huisvesting");
+const cola = num("landCola");
+const reiskosten = num("reiskostenET");
+
+const advAan = get("advUitkeren") === "ja";
+const advPerc = advAan ? num("advPercentage") / 100 : 0;
+
+const verlofAan = get("verlofUitkeren") === "ja";
+const vakantiegeldAan = get("vakantiegeldUitkeren") === "ja";
+const kortverzuimAan = get("kortVerzuimUitkeren") === "ja";
+const korting = get("loonheffingskorting");
+    
+const huuraan = get("invoerhuur") === "ja";
+const zorgaan = get("invoerzorg") === "ja";
+
+const feitelijkLoon = loon * normaleUren;
+const normaalloon = loon * normaleUren;
+const overwerkLoon = ((ow1 / 100) * loon * urenOW1) + ((ow2 / 100) * loon * urenOW2);
+const bovenwettelijkVerlof = verlofAan ? feitelijkLoon * 0.0218 : 0;
+const wettelijkverlof = feitelijkLoon * 0.0874;
+const wettelijkverlofuren = wettelijkverlof / loon;
+
+const vakantiegeld = vakantiegeldAan ? (feitelijkLoon + bovenwettelijkVerlof + wettelijkverlof) * 0.0833 : 0;
+const kortVerzuim = kortverzuimAan ? feitelijkLoon * 0.006 : 0;
+const adv = feitelijkLoon * advPerc;
+
+const pensioenuren = normaleUren + urenOW1 + urenOW2;
+const ruimteNormaal = (loon - minLoon) * normaleUren;
+const ruimteOW1 = (loon - minLoon) * urenOW1 + ((ow1 - 100) / 100) * (1 - 0.08) * loon * urenOW1;
+const ruimteOW2 = (loon - minLoon) * urenOW2 + ((ow2 - 100) / 100) * (1 - 0.08) * loon * urenOW2;
+const totaalRuimte = ruimteNormaal + ruimteOW1 + ruimteOW2;
+const alleUitruil = huisvesting + cola + reiskosten;
+const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
+const uitTeRuilenNegatief = -1 * uitTeRuilen;
+
+const brutoVoorSpaww = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
+const brutoVoorSpaww2 = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
+const premieAZW = feitelijkLoon * -0.007;
+const premieWWWGA = brutoVoorSpaww2 * -0.001;
+
+const spaww = brutoVoorSpaww2 * 0.001;
+
+const zorgpremieinhouden = zorgaan ? -38.02 : 0;
+const huurinhouden = huuraan ? -huisvesting : 0;
+
+const subtotaalBruto = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + spaww;
+const grondslagPensioen = brutoVoorSpaww + premieAZW;
+const pensioengevendLoon = grondslagPensioen - (pensioenuren * 8.9);
+const StippPremie = pensioengevendLoon * 0.04 * -1;
+const loonVoorLH = normaalloon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen + StippPremie + premieAZW + spaww + premieWWWGA;
+const loonheffing = dichtstbijzijndeLoonheffing(loonVoorLH, korting);
+const loonheffingNegatief = -1 * loonheffing;
+const subtotaalNetto = loonVoorLH - loonheffing;
+const premieWHK = loonVoorLH * -0.0068;
+const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgpremieinhouden + premieWHK;
+
+const resultaat = Loon normale uren: €${normaalloon.toFixed(2)}
+Loon overuren: €${overwerkLoon.toFixed(2)}
+Bovenwettelijk verlof: €${bovenwettelijkVerlof.toFixed(2)}
+Vakantiegeld: €${vakantiegeld.toFixed(2)}
+Kort verzuim: €${kortVerzuim.toFixed(2)}
+ADV: €${adv.toFixed(2)}
+SPAWW compensatie: €${spaww.toFixed(2)}
+Totale uitruil: €${uitTeRuilenNegatief.toFixed(2)}
+Subtotaal brutoloon: €${subtotaalBruto.toFixed(2)}
+
+Premie aanvulling ww: €${premieWWWGA.toFixed(2)}
+Premie AZW: €${premieAZW.toFixed(2)}
+Stipp Plus: ${StippPremie.toFixed(2)}
+Loonheffing (${korting}): €${loonheffingNegatief.toFixed(2)}
+Subtotaal nettoloon: €${subtotaalNetto.toFixed(2)}
+
+Inhouding huur: €${huurinhouden.toFixed(2)}
+Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
+WHK: €${premieWHK.toFixed(2)}
+Vergoeding ET: €${uitTeRuilen.toFixed(2)}
+Uit te betalen loon: €${nettoLoon.toFixed(2)}
+
+
+Feitelijk loon: €${feitelijkLoon.toFixed(2)}
+Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
+grondslagPensioen ${grondslagPensioen.toFixed(2)}
+pensioengevendLoon ${pensioengevendLoon.toFixed(2)}
+pensioenuren ${pensioenuren.toFixed(2)}
+
+ET-invoer-huisvesting ${huisvesting.toFixed(2)}
+ET-invoer-cola ${cola.toFixed(2)}
+ET-invoer-reiskosten ${reiskosten.toFixed(2)}
+Wens uitruil: ${alleUitruil.toFixed(2)}
+
+ruimteNormaal ${ruimteNormaal.toFixed(2)}
+ruimteOW1 ${ruimteOW1.toFixed(2)}
+ruimteOW2 ${ruimteOW2.toFixed(2)}
+Berekende ruimte (norm+ow1+ow2) :${totaalRuimte.toFixed(2)}
+Uit te ruilen :${uitTeRuilen.toFixed(2)}
+
+Wettelijkverlof (uren ${wettelijkverlofuren.toFixed(2)}): €${wettelijkverlof.toFixed(2)};
+
+document.getElementById("resultaat").textContent = resultaat;
+}
 </script>
 
   
