@@ -119,6 +119,31 @@
 
   <div class="resultaat" id="resultaat">Bezig met laden van loonheffingstabel...</div>
 
+  <script>
+let loonheffingTabel = [];
+Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6XrFlFD7qt0ZWCA1tG3Ogiq070YH1DxksJ0iGaRP82trSX-z3BTYp4uWFAnSX-wcITblotnaa54wc/pub?output=csv", {
+  download: true,
+  header: true,
+  complete: function(results) {
+    loonheffingTabel = results.data.map(row => {
+      const keys = Object.keys(row);
+      const brutoloonKey = keys.find(k => k.toLowerCase().includes("bruto"));
+      const metKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("met"));
+      const zonderKey = keys.find(k => k.toLowerCase().includes("loonheffings") && k.toLowerCase().includes("zonder"));
+      
+      return {
+        bruto: parseFloat(row[brutoloonKey].replace(',', '.')),
+        zonder: parseFloat(row[zonderKey].replace(',', '.')),
+        met: parseFloat(row[metKey].replace(',', '.'))     
+      };
+    }).filter(r => !isNaN(r.bruto));
+
+    document.getElementById("resultaat").innerText = "Klaar voor berekening.";
+  }
+});
+</script>
+
+  
   <!-- Script blijft ongewijzigd -->
 </body>
 </html>
