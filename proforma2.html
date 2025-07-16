@@ -125,10 +125,11 @@ const alleUitruil = huisvesting + cola + reiskosten;
 const uitTeRuilen = Math.min(alleUitruil, totaalRuimte);
 
 const brutoVoorSpaww = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv;
+const brutoVoorSpaww2 = feitelijkLoon + overwerkLoon + bovenwettelijkVerlof + vakantiegeld + kortVerzuim + adv - uitTeRuilen;
 const premieAZW = feitelijkLoon * -0.007;
 const premieWWWGA = brutoVoorSpaww * -0.001;
 const premieWHK = brutoVoorSpaww * -0.0068;
-const spaww = brutoVoorSpaww * 0.001;
+const spaww = brutoVoorSpaww2 * 0.001;
 
 const subtotaalBruto = brutoVoorSpaww + premieAZW - uitTeRuilen;
 const grondslagPensioen = brutoVoorSpaww;
