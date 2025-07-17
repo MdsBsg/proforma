@@ -83,6 +83,7 @@
 </head>
 <body>
   <h1>Proforma Loonberekening</h1>
+  <div id="resultaat">Bezig met laden van loonheffingstabel...</div>
 
   <form>
     <label>Loon (€ per uur): <input type="number" id="loon" value="19.01"></label>
@@ -130,13 +131,12 @@
 
     
   </form>
-
-<div class="resultaat">
-  <div class="resultaat-columns">
-    <div class="resultaat-col" id="resultaat-col1"></div>
-    <div class="resultaat-col" id="resultaat-col2"></div>
+  <div class="resultaat">
+    <div class="resultaat-columns">
+      <div class="resultaat-col" id="resultaat-col1"></div>
+      <div class="resultaat-col" id="resultaat-col2"></div>
+    </div>
   </div>
-</div>
 
 <script>
 let loonheffingTabel = [];
