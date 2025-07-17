@@ -235,7 +235,7 @@ function bereken() {
   const kostprijstotaal = kostprijsfactor * (normaalloon + overwerkLoon)
   const kostprijsperuur = kostprijstotaal / pensioenuren
   const margeperuur = (omzet - kostprijstotaal) / pensioenuren
-  const nettoloonperuur = nettoloon / pensioenuren
+  const nettoloonperuur = nettoLoon / pensioenuren
 
   const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
