@@ -108,7 +108,7 @@
     <label>Inhouden huur? <select id="invoerhuur"><option>ja</option><option>nee</option></select></label>
 
     <label>Inhouden zorgpremie? <select id="invoerzorg"><option>ja</option><option>nee</option></select></label>
-    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="14.06"></label>
+    <label>Minimumloon (€ per uur): <input type="number" id="minimumLoon" value="14.40"></label>
 
     <label>ADV periodiek uitkeren? <select id="advUitkeren"><option>nee</option><option>ja</option></select></label>
     <label>ADV percentage (%): <input type="number" id="advPercentage"></label>
@@ -118,6 +118,10 @@
 
     <label>Kort verzuim uitkeren? <select id="kortVerzuimUitkeren"><option>nee</option><option>ja</option></select></label>
     <label>Loonheffingskorting toepassen? <select id="loonheffingskorting"><option>ja</option><option>nee</option></select></label>
+
+    <label>Gemiddelde kostprijsfactor: <input type="number" id="kostprijsfactor" value="1.755"></label>
+    <label>Tarief: <input type="number" id="tarief" value="38.50"></label>
+    
 
     <div class="fullwidth">
       <button type="button" onclick="bereken()">Bereken</button>
@@ -222,6 +226,13 @@ function bereken() {
   const subtotaalNetto = loonVoorLH - loonheffing;
   const premieWHK = loonVoorLH * -0.0068;
   const nettoLoon = subtotaalNetto + uitTeRuilen + huurinhouden + zorgpremieinhouden + premieWHK;
+  const nettouurloon = nettoLoon / pensioenuren;
+
+  const omzet = tarief * pensioenuren
+  const kostprijstotaal = kostprijsfactor * (normaalloon + overwerkLoon)
+  const kostprijsperuur = kostprijstotaal / pensioenuren
+  const margeperuur = (omzet - kostprijstotaal) / pensioenuren
+  const nettoloonperuur = nettoloon / pensioenuren
 
   const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
@@ -244,6 +255,18 @@ Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
 Vergoeding ET: €${uitTeRuilen.toFixed(2)}
 <strong>Uit te betalen loon: €${nettoLoon.toFixed(2)}</strong>
+
+
+Tarief: €${tarief.toFixed(2)}
+Omzet: €${omzet.toFixed(2)}
+
+Kostprijsfactor: ${kostprijsfactor.toFixed(4)}
+Kostprijs: €${kostprijstotaal.toFixed(2)}
+Kostprijs per uur: €${kostprijsperuur.toFixed(2)}
+
+<strong>Marge per uur: €${margeperuur.toFixed(2)}</strong>
+<strong>Nettoloon per uur: €${nettoloonperuur.toFixed(2)}</strong>
+
 
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
