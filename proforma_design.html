@@ -162,11 +162,11 @@ function dichtstbijzijndeLoonheffing(grondslag, korting) {
 }
 
 function bereken() {
+  const tarief = parseFloat(document.getElementById("tarief").value) || 0;
+  const kostprijsfactor = parseFloat(document.getElementById("kostprijsfactor").value) || 0;
+
   const get = id => document.getElementById(id).value;
   const num = id => parseFloat(get(id)) || 0;
-  
-  const tarief = parseFloat(get(id)) || 0;
-  const kostprijsfactor = parseFloat(get(id)) || 0;
   
   const loon = num("loon");
   const minLoon = num("minimumLoon");
