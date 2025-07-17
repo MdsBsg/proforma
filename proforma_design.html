@@ -165,10 +165,7 @@ function bereken() {
   const tarief = parseFloat(document.getElementById("tarief").value) || 0;
   const kostprijsfactor = parseFloat(document.getElementById("kostprijsfactor").value) || 0;
 
-  //deze versie
-document.getElementById("resultaat-col1").innerHTML = deel1;
-document.getElementById("resultaat-col2").innerHTML = deel2;
-// einde deze versie
+
   
   const get = id => document.getElementById(id).value;
   const num = id => parseFloat(get(id)) || 0;
@@ -242,6 +239,8 @@ document.getElementById("resultaat-col2").innerHTML = deel2;
   const margeperuur = (omzet - kostprijstotaal) / pensioenuren
   const nettoloonperuur = nettoLoon / pensioenuren
 
+
+  
   //oud const resultaat = `Tarief: €${tarief.toFixed(2)}
 const deel1 = `
 Tarief: €${tarief.toFixed(2)}
@@ -293,7 +292,10 @@ Ruimte OW2: €${ruimteOW2.toFixed(2)}
 Totale ruimte: €${totaalRuimte.toFixed(2)}
 Uit te ruilen: €${uitTeRuilen.toFixed(2)}`;
 
-  document.getElementById("resultaat").innerHTML = resultaat;
+
+document.getElementById("resultaat-col1").innerHTML = deel1;
+document.getElementById("resultaat-col2").innerHTML = deel2;
+//oud document.getElementById("resultaat").innerHTML = resultaat;
 }
 </script>
 
