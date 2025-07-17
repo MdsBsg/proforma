@@ -165,6 +165,11 @@ function bereken() {
   const tarief = parseFloat(document.getElementById("tarief").value) || 0;
   const kostprijsfactor = parseFloat(document.getElementById("kostprijsfactor").value) || 0;
 
+  //deze versie
+document.getElementById("resultaat-col1").innerHTML = deel1;
+document.getElementById("resultaat-col2").innerHTML = deel2;
+// einde deze versie
+  
   const get = id => document.getElementById(id).value;
   const num = id => parseFloat(get(id)) || 0;
   
@@ -237,7 +242,17 @@ function bereken() {
   const margeperuur = (omzet - kostprijstotaal) / pensioenuren
   const nettoloonperuur = nettoLoon / pensioenuren
 
-  const resultaat = `Loon normale uren: €${normaalloon.toFixed(2)}
+  //oud const resultaat = `Tarief: €${tarief.toFixed(2)}
+const deel1 = `
+Tarief: €${tarief.toFixed(2)}
+Omzet: €${omzet.toFixed(2)}
+Kostprijsfactor: ${kostprijsfactor.toFixed(4)}
+Kostprijs: €${kostprijstotaal.toFixed(2)}
+Kostprijs per uur: €${kostprijsperuur.toFixed(2)}
+<strong>Marge per uur: €${margeperuur.toFixed(2)}</strong>
+<strong>Nettoloon per uur: €${nettoloonperuur.toFixed(2)}</strong>
+
+Loon normale uren: €${normaalloon.toFixed(2)}
 Loon overuren: €${overwerkLoon.toFixed(2)}
 Bovenwettelijk verlof: €${bovenwettelijkVerlof.toFixed(2)}
 Vakantiegeld: €${vakantiegeld.toFixed(2)}
@@ -257,25 +272,15 @@ Inhouding huur: €${huurinhouden.toFixed(2)}
 Inhouding zorgpremie: €${zorgpremieinhouden.toFixed(2)}
 WHK: €${premieWHK.toFixed(2)}
 Vergoeding ET: €${uitTeRuilen.toFixed(2)}
-<strong>Uit te betalen loon: €${nettoLoon.toFixed(2)}</strong>
+<strong>Uit te betalen loon: €${nettoLoon.toFixed(2)}</strong>`;
 
-
-Tarief: €${tarief.toFixed(2)}
-Omzet: €${omzet.toFixed(2)}
-
-Kostprijsfactor: ${kostprijsfactor.toFixed(4)}
-Kostprijs: €${kostprijstotaal.toFixed(2)}
-Kostprijs per uur: €${kostprijsperuur.toFixed(2)}
-
-<strong>Marge per uur: €${margeperuur.toFixed(2)}</strong>
-<strong>Nettoloon per uur: €${nettoloonperuur.toFixed(2)}</strong>
-
-
+const deel2 = `
 Feitelijk loon: €${feitelijkLoon.toFixed(2)}
 Loon voor loonheffing: €${loonVoorLH.toFixed(2)}
 Grondslag pensioen: €${grondslagPensioen.toFixed(2)}
 Pensioengevend loon: €${pensioengevendLoon.toFixed(2)}
 Pensioenuren: ${pensioenuren.toFixed(2)}
+Wettelijk verlof (uren: ${wettelijkverlofuren.toFixed(2)}): €${wettelijkverlof.toFixed(2)}
 
 ET-invoer huisvesting: €${huisvesting.toFixed(2)}
 ET-invoer cola: €${cola.toFixed(2)}
@@ -286,9 +291,7 @@ Ruimte normaal: €${ruimteNormaal.toFixed(2)}
 Ruimte OW1: €${ruimteOW1.toFixed(2)}
 Ruimte OW2: €${ruimteOW2.toFixed(2)}
 Totale ruimte: €${totaalRuimte.toFixed(2)}
-Uit te ruilen: €${uitTeRuilen.toFixed(2)}
-
-Wettelijk verlof (uren: ${wettelijkverlofuren.toFixed(2)}): €${wettelijkverlof.toFixed(2)}`;
+Uit te ruilen: €${uitTeRuilen.toFixed(2)}`;
 
   document.getElementById("resultaat").innerHTML = resultaat;
 }
