@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Onboarding arbeidsmigrant</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2em auto; }
+    fieldset { margin-bottom: 1.5em; padding: 1em; border: 1px solid #ccc; }
+    legend { font-weight: bold; }
+    label { display: block; margin-top: 1em; }
+    select, input[type="file"], input[type="number"] { width: 100%; max-width: 400px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <h1>Onboarding arbeidsmigrant</h1>
+
+  <form action="#" method="post" enctype="multipart/form-data">
+
+    <!-- Sectie 1: ET-regeling -->
+    <fieldset>
+      <legend>1. ET-regeling</legend>
+      <label>
+        1. ET-regeling van toepassing:
+        <select name="et_regeling" id="et_regeling" required onchange="toggleEtVragen()">
+          <option value="">-- Selecteer --</option>
+          <option value="a">a. Ja</option>
+          <option value="b">b. Nee</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <div id="et_vragen" class="hidden">
+      <fieldset>
+        <legend>2. Documenten bij ET-regeling</legend>
+        <label>
+          2. Wervingslijst:
+          <input type="file" name="wervingslijst">
+        </label>
+        <label>
+          3. Bewijs huisvesting thuisland – type:
+          <select name="bewijs_thuisland_type">
+            <option value="">-- Selecteer --</option>
+            <option value="a">a. Bewijs van erkend adres buitenland</option>
+            <option value="b">b. Huurovereenkomst</option>
+            <option value="c">c. Koopovereenkomst</option>
+            <option value="d">d. Energierekening</option>
+            <option value="e">e. Telefoon/internet rekening</option>
+          </select>
+        </label>
+        <label>
+          4. Bewijs huisvesting thuisland – upload:
+          <input type="file" name="bewijs_thuisland_bestand">
+        </label>
+      </fieldset>
+
+      <!-- Sectie 3: Huisvesting -->
+      <fieldset>
+        <legend>3. Huisvesting</legend>
+        <label>
+          5. Huisvesting uitruilen:
+          <select name="huisvesting_uitruilen" id="huisvesting_uitruilen" onchange="toggleHuisvestingVragen()">
+            <option value="">-- Selecteer --</option>
+            <option value="a">a. Ja</option>
+            <option value="b">b. Nee</option>
+          </select>
+        </label>
+        <div id="huisvesting_blok" class="hidden">
+          <label>
+            6. Type uitruil:
+            <select name="type_uitruil" id="type_uitruil" onchange="toggleHuisvestingLogica()">
+              <option value="">-- Selecteer --</option>
+              <option value="a">a. Bruto uitruil, netto vergoeding</option>
+              <option value="b">b. Bruto uitruil. Indien gebrek aan ruimte dan netto inhouden.</option>
+            </select>
+          </label>
+          <label>
+            7. Huurovereenkomst met:
+            <select name="huur_ovk" id="huur_ovk">
+              <option value="a">a. Huurovereenkomst met derde</option>
+              <option value="b">b. Werkgever regelt huisvesting</option>
+            </select>
+          </label>
+          <label id="vraag8">
+            8. Huurovereenkomst met derde:
+            <input type="file" name="huurcontract_derde">
+          </label>
+          <label id="vraag9">
+            9. Huurovereenkomst met werkgever:
+            <input type="file" name="huurcontract_werkgever">
+          </label>
+          <label id="vraag10">
+            10. Inhouding huur:
+            <select name="inhouding_huur" id="inhouding_huur" onchange="toggleInhoudingVragen()">
+              <option value="">-- Selecteer --</option>
+              <option value="a">a. Werknemer betaalt zelf</option>
+              <option value="b">b. Inhouding op loon</option>
+            </select>
+          </label>
+          <label id="vraag11">
+            11. Volmacht netto inhouding huur:
+            <input type="file" name="volmacht_netto">
+          </label>
+          <label id="vraag12">
+            12. PKS tool ingevuld:
+            <input type="file" name="pks_tool">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Sectie 4: Homeleave -->
+      <fieldset>
+        <legend>4. Homeleave</legend>
+        <label>
+          13. Reiskostenvergoeding:
+          <select name="homeleave" id="homeleave" onchange="toggleHomeleave()">
+            <option value="">-- Selecteer --</option>
+            <option value="a">a. Bruto inhouding/netto vergoeding</option>
+            <option value="b">b. Bruto inhouding + extra vergoeding</option>
+            <option value="c">c. Alleen nettovergoeding</option>
+            <option value="d">d. Geen vergoeding</option>
+          </select>
+        </label>
+        <div id="homeleave_extra" class="hidden">
+          <label>
+            14. Onderbouwing homeleave:
+            <input type="file" name="reiskosten_homeleave">
+          </label>
+          <label>
+            15. Bedrag vergoeding homeleave (€):
+            <input type="number" name="bedrag_vergoeding_hl" step="0.01" min="0">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Sectie 5: Levensonderhoud / COLA -->
+      <fieldset>
+        <legend>5. Levensonderhoud / COLA</legend>
+        <label>
+          16. Methode bepaling levensonderhoud:
+          <select name="cola" id="cola" onchange="toggleCola()">
+            <option value="">-- Selecteer --</option>
+            <option value="a">a. Niet van toepassing</option>
+            <option value="b">b. Volgens LTO-tabel</option>
+            <option value="c">c. Volgens Mazars-tabel</option>
+          </select>
+        </label>
+        <div id="cola_extra" class="hidden">
+          <label>
+            17. Upload bewijs levensonderhoud:
+            <input type="file" name="onderbouwing_cola">
+          </label>
+          <label>
+            18. Bedrag vergoeding levensonderhoud (€):
+            <input type="number" name="bedrag_vergoeding_lo" step="0.01" min="0">
+          </label>
+        </div>
+      </fieldset>
+
+    </div>
+
+    <button type="submit">Verzenden</button>
+  </form>
+
+  <script>
+    function toggleEtVragen() {
+      const val = document.getElementById('et_regeling').value;
+      document.getElementById('et_vragen').classList.toggle('hidden', val !== 'a');
+    }
+
+    function toggleHuisvestingVragen() {
+      const h = document.getElementById('huisvesting_uitruilen').value;
+      const block = document.getElementById('huisvesting_blok');
+      block.classList.toggle('hidden', h !== 'a');
+
+      const huur_ovk = document.getElementById('huur_ovk');
+
+      document.getElementById('vraag8').style.display = 'none';
+      document.getElementById('vraag9').style.display = 'none';
+      document.getElementById('vraag10').style.display = 'none';
+      document.getElementById('vraag11').style.display = 'none';
+      document.getElementById('vraag12').style.display = 'none';
+
+      huur_ovk.disabled = true;
+      huur_ovk.value = '';
+    }
+
+    function toggleHuisvestingLogica() {
+      const h = document.getElementById('huisvesting_uitruilen').value;
+      const type = document.getElementById('type_uitruil').value;
+      const huur_ovk = document.getElementById('huur_ovk');
+
+      if (h !== 'a') return;
+
+      if (type === 'a') {
+        huur_ovk.value = 'a';
+        huur_ovk.disabled = true;
+        document.getElementById('vraag8').style.display = 'block';
+        document.getElementById('vraag9').style.display = 'none';
+
+        document.getElementById('vraag10').style.display = 'block';
+        toggleInhoudingVragen();
+
+      } else if (type === 'b') {
+        huur_ovk.value = 'b';
+        huur_ovk.disabled = true;
+        document.getElementById('vraag8').style.display = 'none';
+        document.getElementById('vraag9').style.display = 'block';
+        document.getElementById('vraag10').style.display = 'none';
+        document.getElementById('vraag11').style.display = 'block';
+        document.getElementById('vraag12').style.display = 'block';
+      }
+    }
+
+    function toggleInhoudingVragen() {
+      const val = document.getElementById('inhouding_huur').value;
+      document.getElementById('vraag11').style.display = val === 'b' ? 'block' : 'none';
+      document.getElementById('vraag12').style.display = 'none';
+    }
+
+    // Vraag 13: toon 14–15 alleen bij a/b/c; anders verbergen
+    function toggleHomeleave() {
+      const val = document.getElementById('homeleave').value;
+      const extra = document.getElementById('homeleave_extra');
+      extra.classList.toggle('hidden', !['a', 'b', 'c'].includes(val));
+    }
+
+    // Vraag 16: toon COLA-extra (17–18) alleen bij b/c; anders verbergen
+    function toggleCola() {
+      const val = document.getElementById('cola').value;
+      const extra = document.getElementById('cola_extra');
+      extra.classList.toggle('hidden', !['b', 'c'].includes(val));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      toggleEtVragen();
+      toggleHuisvestingVragen();
+      toggleHomeleave();
+      toggleCola();
+    });
+  </script>
+
+</body>
+</html>
