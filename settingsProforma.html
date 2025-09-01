@@ -35,12 +35,15 @@
       margin: 8px 0;
       font-size: 14px;
     }
-    input {
-      width: 120px;
+    input, select {
+      width: 220px;
       padding: 4px 6px;
       font-size: 13px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      text-align: left;
+    }
+    input[type="number"] {
       text-align: right;
     }
     button {
@@ -56,10 +59,36 @@
     button:hover {
       background-color: #0073e6;
     }
+    h3 {
+      font-size: 15px;
+      margin: 12px 0 4px;
+      color: #0073e6;
+    }
   </style>
 </head>
 <body>
   <h1>Beheer Parameters</h1>
+
+  <section>
+    <h2>Keuzes</h2>
+    <label>
+      Loonheffingstabel:
+      <select>
+        <option>Nederland</option>
+        <option>Landenkring</option>
+        <option>Een ander derde land</option>
+      </select>
+    </label>
+    <label>
+      Contracttype:
+      <select>
+        <option>Fase 1/2 met uitzendbeding en vaste uren</option>
+        <option>Fase 1/2 met uitzendbeding (oproep)</option>
+        <option>Fase 3</option>
+        <option>Fase 4</option>
+      </select>
+    </label>
+  </section>
 
   <section>
     <h2>Algemene instellingen</h2>
@@ -77,20 +106,25 @@
     <label>ADV (%): <input type="number" step="0.0001" value="0"></label>
   </section>
 
-<section>
-  <h2>Premies & bijdragen</h2>
-  <label>Premie AZW (%): <input type="number" step="0.0001" value="-0.7"></label>
-  <label>Premie WW/WGA (%): <input type="number" step="0.0001" value="-0.1"></label>
-  <label>PAWW bijdrage (%): <input type="number" step="0.0001" value="0.1"></label>
-  <label>Whk bijdrage (%): <input type="number" step="0.0001" value="-0.68"></label>
-  <label>StiPP premie (%): <input type="number" step="0.0001" value="4"></label>
-  <label>Uurfranchise (€): <input type="number" step="0.01" value="8.90"></label>
-  <label>Maximum uurloon (€): <input type="number" step="0.01" value="45.00"></label>
-  <label>Bpf Bouw premie (%): <input type="number" step="0.0001" value="4"></label>
-  <label>Uurfranchise Bpf Bouw (€): <input type="number" step="0.01" value="8.90"></label>
-  <label>Maximum uurloon Bpf Bouw (€): <input type="number" step="0.01" value="45.00"></label>
-</section>
+  <section>
+    <h2>Premies & bijdragen</h2>
 
+    <h3>Algemeen</h3>
+    <label>Premie AZW (%): <input type="number" step="0.0001" value="-0.7"></label>
+    <label>Premie WW/WGA (%): <input type="number" step="0.0001" value="-0.1"></label>
+    <label>PAWW bijdrage (%): <input type="number" step="0.0001" value="0.1"></label>
+    <label>Whk bijdrage (%): <input type="number" step="0.0001" value="-0.68"></label>
+
+    <h3>StiPP</h3>
+    <label>StiPP premie (%): <input type="number" step="0.0001" value="4"></label>
+    <label>Uurfranchise (€): <input type="number" step="0.01" value="8.90"></label>
+    <label>Maximum uurloon (€): <input type="number" step="0.01" value="45.00"></label>
+
+    <h3>Bpf Bouw</h3>
+    <label>Bpf Bouw premie (%): <input type="number" step="0.0001" value="4"></label>
+    <label>Uurfranchise Bpf Bouw (€): <input type="number" step="0.01" value="8.90"></label>
+    <label>Maximum uurloon Bpf Bouw (€): <input type="number" step="0.01" value="45.00"></label>
+  </section>
 
   <section>
     <h2>ET-uitruil</h2>
