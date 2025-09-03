@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flowchart – Onboarding arbeidsmigrant</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+:root { --bg:#0b1020; --card:#11162a; --ink:#e7ebf3; --muted:#9aa4bd; }
+html,body { height:100%; }
+body { margin:0; background:linear-gradient(180deg,#0b1020, #151a30); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+header { padding:24px 28px; }
+h1 { margin:0 0 4px; font-size:20px; font-weight:700; }
+p.sub { margin:0; color:var(--muted); font-size:14px; }
+
+
+.wrap { max-width:1200px; margin:0 auto; padding: 0 20px 28px; }
+.card { background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:16px; }
+
+
+.toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+.toolbar button { cursor:pointer; border:1px solid rgba(255,255,255,.12); background:#1a2140; color:var(--ink); border-radius:10px; padding:8px 12px; font-size:14px; }
+.toolbar button:hover { background:#212a56; }
+.canvas { overflow:auto; background:#0e1328; border-radius:12px; padding:12px; }
+
+
+.mermaid { min-width:800px; }
+/* Make Mermaid SVG scale nicely */
+.mermaid > svg { height:auto !important; }
+.hint { color:var(--muted); font-size:12px; margin-top:8px; }
+</style>
+</head>
+<body>
+<header class="wrap">
+<h1>Flowchart – Onboarding arbeidsmigrant</h1>
+<p class="sub">Interactieve weergave van de formulierlogica (ET-regeling, huisvesting, homeleave en COLA).</p>
+</header>
+
+
+<main class="wrap">
+<div class="card">
+<div class="toolbar">
+<button id="btn-svg">Download SVG</button>
+<button id="btn-png">Download PNG</button>
+</div>
+<div class="canvas">
+<div class="mermaid" id="chart">
+flowchart TD
+A0([Start]) --> A1{1. ET-regeling van toepassing?}
+A1 -- "Nee (b)" --> B0[Ga naar sectie 4–5 (Homeleave & Levensonderhoud)]
+A1 -- "Ja (a)" --> A2[Toon sectie 2: ET-documenten (2–4)]
+A2 --> B1{5. Huisvesting uitruilen?}
+
+
+%% Sectie 3: Huisvesting
+B1 -- "Nee (b)" --> C0[Ga naar sectie 4: Homeleave]
+B1 -- "Ja (a)" --> B2{6. Type uitruil?}
+
+
+B2 -- "a. Bruto uitruil, netto vergoeding" --> B3[7: Huur ovk auto = 'derde' (a), veld uitgeschakeld]
+B3 --> B4[8: Upload huurovereenkomst met derde]
+B4 --> B5{10. Inhouding huur?}
+B5 -- "a. Werknemer betaalt zelf" --> B6[11: Verbergen volmacht netto; 12: blijft verborgen]
+B5 -- "b. Inhouding op loon" --> B7[11: Toon volmacht netto; 12: verborgen]
+
+
+B2 -- "b. Bruto uitruil; bij gebrek aan ruimte netto inhouden" --> B8[7: Huur ovk auto = 'werkgever' (b), veld uitgeschakeld]
+B8 --> B9[9: Upload huurovereenkomst met werkgever]
+B9 --> B10[11: Toon volmacht netto en 12: Toon PKS tool]
+
+
+%% Sectie 4: Homeleave
+C0 --> C1{13. Reiskostenvergoeding?}
+B6 --> C1
+B7 --> C1
+B10 --> C1
+
+
+C1 -- "a/b/c" --> C2[Toon 14: Onderbouwing + 15: Bedrag]
+C1 -- "d. Geen vergoeding" --> C3[Verberg 14–15]
+
+
+%% Sectie 5: Levensonderhoud / COLA
+C2 --> D1{16. Methode levensonderhoud?}
+C3 --> D1
+D1 -- "b/c (LTO of Mazars)" --> D2[Toon 17: Onderbouwing + 18: Bedrag]
+D1 -- "a. Niet van toepassing" --> D3[Verberg 17–18]
+
+
+D2 --> End([Verzenden])
+D3 --> End([Verzenden])
+</div>
+</div>
+<div class="hint">Tip: Download als SVG voor schaalbaar gebruik in documenten of presentaties.</div>
+</div>
+</main>
+
+
+<script>
+mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'default', fontFamily: 'Inter, system-ui, sans-serif' });
+
+
+function downloadSVG() {
+const svg = document.querySelector('.mermaid svg');
